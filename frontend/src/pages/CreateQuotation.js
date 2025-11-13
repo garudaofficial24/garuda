@@ -116,8 +116,8 @@ const CreateQuotation = () => {
   };
 
   const removeItem = (index) => {
-    if (quotationItems.length > 1) {
-      const newItems = quotationItems.filter((_, i) => i !== index);
+    if (invoiceItems.length > 1) {
+      const newItems = invoiceItems.filter((_, i) => i !== index);
       setInvoiceItems(newItems);
     }
   };
