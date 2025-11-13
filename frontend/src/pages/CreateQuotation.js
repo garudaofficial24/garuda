@@ -154,7 +154,7 @@ const CreateQuotation = () => {
 
     const submitData = {
       ...formData,
-      items: quotationItems,
+      items: invoiceItems,
       subtotal: calculateSubtotal(),
       tax_amount: calculateTax(),
       discount_amount: calculateDiscount(),
