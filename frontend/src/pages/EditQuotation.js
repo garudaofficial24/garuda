@@ -134,7 +134,7 @@ const EditQuotation = () => {
   };
 
   const addItem = () => {
-    setQuotationItems([...quotationItems, {
+    setInvoiceItems([...invoiceItems, {
       item_id: "",
       name: "",
       description: "",
