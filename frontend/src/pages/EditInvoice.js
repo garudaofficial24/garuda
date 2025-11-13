@@ -73,8 +73,8 @@ const EditInvoice = () => {
       });
       setInvoiceItems(invoice.items);
     } catch (error) {
-      console.error(\"Error fetching invoice:\", error);
-      toast.error(\"Failed to fetch invoice\");
+      console.error("Error fetching invoice:", error);
+      toast.error("Failed to fetch invoice");
     }
   };
 
