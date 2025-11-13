@@ -580,4 +580,4 @@ const EditInvoice = () => {
   );
 };
 
-export default CreateInvoice;
+export default EditInvoice;
