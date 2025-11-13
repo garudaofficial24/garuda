@@ -70,6 +70,8 @@ const EditInvoice = () => {
         notes: invoice.notes || "",
         template_id: invoice.template_id || "template1",
         status: invoice.status,
+        signature_name: invoice.signature_name || "",
+        signature_position: invoice.signature_position || "",
       });
       setInvoiceItems(invoice.items);
     } catch (error) {
