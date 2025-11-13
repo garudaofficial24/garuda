@@ -255,7 +255,7 @@ const EditInvoice = () => {
                   </div>
                   <div>
                     <Label htmlFor="company_id">Company *</Label>
-                    <Select value={formData.company_id || undefined} onValueChange={(value) => handleSelectChange('company_id', value)}>
+                    <Select key={`company-${formData.company_id || 'empty'}`} value={formData.company_id || ""} onValueChange={(value) => handleSelectChange('company_id', value)}>
                       <SelectTrigger data-testid="company-select">
                         <SelectValue placeholder="Select company" />
                       </SelectTrigger>
@@ -296,7 +296,7 @@ const EditInvoice = () => {
                 </div>
                 <div>
                   <Label htmlFor="currency">Currency</Label>
-                  <Select value={formData.currency || "IDR"} onValueChange={(value) => handleSelectChange('currency', value)}>
+                  <Select key={`currency-${formData.currency || 'IDR'}`} value={formData.currency || "IDR"} onValueChange={(value) => handleSelectChange('currency', value)}>
                     <SelectTrigger data-testid="currency-select">
                       <SelectValue />
                     </SelectTrigger>
@@ -311,7 +311,7 @@ const EditInvoice = () => {
                 </div>
                 <div>
                   <Label htmlFor="status">Status</Label>
-                  <Select value={formData.status || "draft"} onValueChange={(value) => handleSelectChange('status', value)}>
+                  <Select key={`status-${formData.status || 'draft'}`} value={formData.status || "draft"} onValueChange={(value) => handleSelectChange('status', value)}>
                     <SelectTrigger data-testid="status-select">
                       <SelectValue />
                     </SelectTrigger>

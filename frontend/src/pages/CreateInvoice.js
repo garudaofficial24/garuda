@@ -274,7 +274,7 @@ const CreateInvoice = () => {
                 <div>
                   <Label htmlFor="currency">Currency</Label>
                   <Select 
-                    value={formData.currency || "IDR"} 
+                    key={`currency-${formData.currency || 'IDR'}`} value={formData.currency || "IDR"} 
                     onValueChange={(value) => handleSelectChange('currency', value)}
                   >
                     <SelectTrigger data-testid="currency-select">
@@ -292,7 +292,7 @@ const CreateInvoice = () => {
                 <div>
                   <Label htmlFor="status">Status</Label>
                   <Select 
-                    value={formData.status || "draft"} 
+                    key={`status-${formData.status || 'draft'}`} value={formData.status || "draft"} 
                     onValueChange={(value) => handleSelectChange('status', value)}
                   >
                     <SelectTrigger data-testid="status-select">
