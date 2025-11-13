@@ -398,11 +398,21 @@ const Companies = () => {
           {companies.map((company) => (
             <Card key={company.id} data-testid={`company-card-${company.id}`} className="card-hover">
               <CardHeader className="pb-3">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <CardTitle className="text-lg">{company.name}</CardTitle>
+                <div className="flex justify-between items-start gap-3">
+                  <div className="flex items-start gap-3 flex-1">
+                    {company.logo && (
+                      <img
+                        src={company.logo}
+                        alt={`${company.name} logo`}
+                        className="w-12 h-12 object-contain border border-slate-200 rounded p-1 bg-white flex-shrink-0"
+                        data-testid={`company-logo-${company.id}`}
+                      />
+                    )}
+                    <div className="flex-1 min-w-0">
+                      <CardTitle className="text-lg truncate">{company.name}</CardTitle>
+                    </div>
                   </div>
-                  <div className="flex gap-2">
+                  <div className="flex gap-2 flex-shrink-0">
                     <Button
                       size="sm"
                       variant="ghost"
