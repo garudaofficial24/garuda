@@ -400,7 +400,7 @@ const CreateInvoice = () => {
                       <div>
                         <Label>Select from Items Database (Optional)</Label>
                         <Select 
-                          value={item.item_id || undefined} 
+                          key={`item-select-${index}-${item.item_id || 'empty'}`} value={item.item_id || ""} 
                           onValueChange={(value) => handleSelectItem(index, value)}
                         >
                           <SelectTrigger data-testid={`item-select-${index}`}>
