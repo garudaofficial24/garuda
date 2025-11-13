@@ -47,6 +47,18 @@ const Quotations = () => {
     }
   };
 
+  const handlePreview = async (quotation) => {
+    try {
+      const response = await axios.get(`${API}/quotations/${quotation.id}`);
+      const companyResponse = await axios.get(`${API}/companies/${quotation.company_id}`);
+      setPreviewQuotation({ ...response.data, company: companyResponse.data });
+      setPreviewDialogOpen(true);
+    } catch (error) {
+      console.error("Error loading preview:", error);
+      toast.error("Failed to load preview");
+    }
+  };
+
   const handleDownloadPDF = async (id, quotationNumber) => {
     try {
       const response = await axios.get(`${API}/quotations/${id}/pdf`, {
