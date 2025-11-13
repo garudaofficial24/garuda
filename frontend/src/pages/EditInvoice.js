@@ -253,7 +253,7 @@ const EditInvoice = () => {
                   </div>
                   <div>
                     <Label htmlFor="company_id">Company *</Label>
-                    <Select value={formData.company_id} onValueChange={(value) => handleSelectChange('company_id', value)}>
+                    <Select value={formData.company_id || undefined} onValueChange={(value) => handleSelectChange('company_id', value)}>
                       <SelectTrigger data-testid="company-select">
                         <SelectValue placeholder="Select company" />
                       </SelectTrigger>
@@ -294,7 +294,7 @@ const EditInvoice = () => {
                 </div>
                 <div>
                   <Label htmlFor="currency">Currency</Label>
-                  <Select value={formData.currency} onValueChange={(value) => handleSelectChange('currency', value)}>
+                  <Select value={formData.currency || "IDR"} onValueChange={(value) => handleSelectChange('currency', value)}>
                     <SelectTrigger data-testid="currency-select">
                       <SelectValue />
                     </SelectTrigger>
@@ -309,7 +309,7 @@ const EditInvoice = () => {
                 </div>
                 <div>
                   <Label htmlFor="status">Status</Label>
-                  <Select value={formData.status} onValueChange={(value) => handleSelectChange('status', value)}>
+                  <Select value={formData.status || "draft"} onValueChange={(value) => handleSelectChange('status', value)}>
                     <SelectTrigger data-testid="status-select">
                       <SelectValue />
                     </SelectTrigger>
@@ -414,7 +414,7 @@ const EditInvoice = () => {
                       </div>
                       <div>
                         <Label>Select from Items Database (Optional)</Label>
-                        <Select value={item.item_id || ""} onValueChange={(value) => handleSelectItem(index, value)}>
+                        <Select value={item.item_id || undefined} onValueChange={(value) => handleSelectItem(index, value)}>
                           <SelectTrigger data-testid={`item-select-${index}`}>
                             <SelectValue placeholder="Select an item" />
                           </SelectTrigger>
