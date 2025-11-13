@@ -222,8 +222,8 @@ const EditInvoice = () => {
           <ArrowLeft size={20} className="mr-2" />
           Back to Invoices
         </Button>
-        <h1 className="text-3xl font-bold text-slate-800 mb-2">Create New Invoice</h1>
-        <p className="text-slate-600">Fill in the details to create a new invoice</p>
+        <h1 className="text-3xl font-bold text-slate-800 mb-2">Edit Invoice</h1>
+        <p className="text-slate-600">Update the invoice details</p>
       </div>
 
       <form onSubmit={handleSubmit}>
