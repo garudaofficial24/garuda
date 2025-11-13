@@ -33,7 +33,7 @@ const EditQuotation = () => {
     template_id: "template1",
     status: "draft",
   });
-  const [quotationItems, setQuotationItems] = useState([{
+  const [invoiceItems, setInvoiceItems] = useState([{
     item_id: "",
     name: "",
     description: "",
