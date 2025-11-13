@@ -47,6 +47,18 @@ const Invoices = () => {
     }
   };
 
+  const handlePreview = async (invoice) => {
+    try {
+      const response = await axios.get(`${API}/invoices/${invoice.id}`);
+      const companyResponse = await axios.get(`${API}/companies/${invoice.company_id}`);
+      setPreviewInvoice({ ...response.data, company: companyResponse.data });
+      setPreviewDialogOpen(true);
+    } catch (error) {
+      console.error("Error loading preview:", error);
+      toast.error("Failed to load preview");
+    }
+  };
+
   const handleDownloadPDF = async (id, invoiceNumber) => {
     try {
       const response = await axios.get(`${API}/invoices/${id}/pdf`, {
