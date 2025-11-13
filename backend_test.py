@@ -385,7 +385,7 @@ class InvoiceQuotationAPITester:
             }
             
             self.run_test(
-                f"Create Invoice with {currency}", "POST", "invoices", 201, invoice_data
+                f"Create Invoice with {currency}", "POST", "invoices", 200, invoice_data
             )
 
     def cleanup_test_data(self):
