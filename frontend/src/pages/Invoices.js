@@ -50,12 +50,28 @@ const Invoices = () => {
   const handlePreview = async (invoice) => {
     try {
       const response = await axios.get(`${API}/invoices/${invoice.id}`);
-      const companyResponse = await axios.get(`${API}/companies/${invoice.company_id}`);
-      setPreviewInvoice({ ...response.data, company: companyResponse.data });
+      
+      // Try to get company, but handle if company doesn't exist
+      let companyData = null;
+      try {
+        const companyResponse = await axios.get(`${API}/companies/${invoice.company_id}`);
+        companyData = companyResponse.data;
+      } catch (companyError) {
+        console.warn("Company not found, using invoice data only");
+        // Create a minimal company object from invoice data if company not found
+        companyData = {
+          name: "Company Information Not Available",
+          address: "",
+          phone: "",
+          email: ""
+        };
+      }
+      
+      setPreviewInvoice({ ...response.data, company: companyData });
       setPreviewDialogOpen(true);
     } catch (error) {
       console.error("Error loading preview:", error);
-      toast.error("Failed to load preview");
+      toast.error("Failed to load preview. Please try again.");
     }
   };
 
