@@ -31,6 +31,8 @@ const CreateInvoice = () => {
     notes: "",
     template_id: "template1",
     status: "draft",
+    signature_name: "",
+    signature_position: "",
   });
   const [invoiceItems, setInvoiceItems] = useState([{
     item_id: "",
