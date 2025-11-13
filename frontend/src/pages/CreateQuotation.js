@@ -67,14 +67,14 @@ const CreateQuotation = () => {
     }
   };
 
-  const handleInputChange = (e) => {
+  const handleInputChange = useCallback((e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
-  };
+    setFormData(prev => ({ ...prev, [name]: value }));
+  }, []);
 
-  const handleSelectChange = (name, value) => {
-    setFormData({ ...formData, [name]: value });
-  };
+  const handleSelectChange = useCallback((name, value) => {
+    setFormData(prev => ({ ...prev, [name]: value }));
+  }, []);
 
   const handleItemChange = (index, field, value) => {
     const newItems = [...invoiceItems];
