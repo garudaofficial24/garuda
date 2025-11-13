@@ -206,6 +206,9 @@ const Quotations = () => {
         <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
           <DialogHeader>
             <DialogTitle>Quotation Preview</DialogTitle>
+            <DialogDescription>
+              Preview your quotation before downloading or printing
+            </DialogDescription>
           </DialogHeader>
           {previewQuotation && (
             <div className="preview-container bg-white p-8 rounded-lg border">
