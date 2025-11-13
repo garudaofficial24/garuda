@@ -183,7 +183,7 @@ async def root():
     return {"message": "Invoice & Quotation API"}
 
 # Company Routes
-@api_router.post("/companies", response_model=Company)
+@api_router.post("/companies", response_model=Company, status_code=201)
 async def create_company(input: CompanyCreate):
     company_dict = input.model_dump()
     company = Company(**company_dict)
