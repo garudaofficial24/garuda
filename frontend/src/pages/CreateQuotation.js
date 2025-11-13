@@ -147,7 +147,7 @@ const CreateQuotation = () => {
       return;
     }
 
-    if (quotationItems.length === 0 || !quotationItems[0].name) {
+    if (invoiceItems.length === 0 || !invoiceItems[0].name) {
       toast.error("Please add at least one item");
       return;
     }
