@@ -479,6 +479,30 @@ const CreateQuotation = () => {
                     placeholder="Payment terms, additional information, etc."
                   />
                 </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="signature_name">Authorized Signature Name</Label>
+                    <Input
+                      id="signature_name"
+                      name="signature_name"
+                      data-testid="signature-name-input"
+                      value={formData.signature_name}
+                      onChange={handleInputChange}
+                      placeholder="e.g., John Doe"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="signature_position">Position/Title</Label>
+                    <Input
+                      id="signature_position"
+                      name="signature_position"
+                      data-testid="signature-position-input"
+                      value={formData.signature_position}
+                      onChange={handleInputChange}
+                      placeholder="e.g., Finance Director"
+                    />
+                  </div>
+                </div>
               </CardContent>
             </Card>
           </div>
