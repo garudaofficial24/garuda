@@ -53,7 +53,8 @@ const EditInvoice = () => {
 
   const fetchInvoice = async () => {
     try {
-      const response = await axios.get(`${API}/invoices/${id}`);\n      const invoice = response.data;
+      const response = await axios.get(`${API}/invoices/${id}`);
+      const invoice = response.data;
       setFormData({
         invoice_number: invoice.invoice_number,
         company_id: invoice.company_id,
