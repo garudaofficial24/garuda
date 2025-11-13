@@ -50,12 +50,28 @@ const Quotations = () => {
   const handlePreview = async (quotation) => {
     try {
       const response = await axios.get(`${API}/quotations/${quotation.id}`);
-      const companyResponse = await axios.get(`${API}/companies/${quotation.company_id}`);
-      setPreviewQuotation({ ...response.data, company: companyResponse.data });
+      
+      // Try to get company, but handle if company doesn't exist
+      let companyData = null;
+      try {
+        const companyResponse = await axios.get(`${API}/companies/${quotation.company_id}`);
+        companyData = companyResponse.data;
+      } catch (companyError) {
+        console.warn("Company not found, using quotation data only");
+        // Create a minimal company object from quotation data if company not found
+        companyData = {
+          name: "Company Information Not Available",
+          address: "",
+          phone: "",
+          email: ""
+        };
+      }
+      
+      setPreviewQuotation({ ...response.data, company: companyData });
       setPreviewDialogOpen(true);
     } catch (error) {
       console.error("Error loading preview:", error);
-      toast.error("Failed to load preview");
+      toast.error("Failed to load preview. Please try again.");
     }
   };
 
