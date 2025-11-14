@@ -144,7 +144,7 @@ class InvoiceQuotationAPITester:
         }
         
         success, response = self.run_test(
-            "Create Item", "POST", "items", 200, 
+            "Create Item", "POST", "items", 201, 
             item_data, return_response=True
         )
         
