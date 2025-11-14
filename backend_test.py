@@ -624,6 +624,12 @@ class InvoiceQuotationAPITester:
         self.test_invoice_crud()
         self.test_quotation_crud()
         
+        # Test Letters feature
+        self.test_signature_upload()
+        self.test_letter_crud()
+        self.test_letter_types()
+        self.test_letter_pdf_generation()
+        
         # Test advanced features
         self.test_pdf_generation()
         self.test_multi_currency()
