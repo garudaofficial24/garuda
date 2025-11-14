@@ -12,8 +12,6 @@ const Letters = () => {
   const navigate = useNavigate();
   const [letters, setLetters] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [previewOpen, setPreviewOpen] = useState(false);
-  const [previewUrl, setPreviewUrl] = useState("");
 
   useEffect(() => {
     fetchLetters();
