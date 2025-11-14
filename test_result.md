@@ -116,6 +116,9 @@ backend:
       - working: true
         agent: "main"
         comment: "Backend unchanged for dropdown replacement task"
+      - working: true
+        agent: "testing"
+        comment: "Comprehensive backend API testing completed successfully. All 27 tests passed (100% success rate). Tested: Company CRUD (create/read/update/delete), Item CRUD, Invoice CRUD, Quotation CRUD, PDF generation for invoices and quotations, multi-currency support (USD/EUR/SGD/MYR), and cleanup operations. All endpoints responding correctly with proper status codes and data integrity maintained. Backend remains fully functional after frontend dropdown replacement."
 
 frontend:
   - task: "Replace Shadcn Select with native HTML select in CreateInvoice.js"
