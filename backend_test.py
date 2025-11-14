@@ -99,6 +99,7 @@ class InvoiceQuotationAPITester:
             "phone": "+62-21-1234567",
             "email": "test@company.com",
             "website": "https://testcompany.com",
+            "motto": "Excellence in Every Service",
             "npwp": "12.345.678.9-012.000",
             "bank_name": "Bank Test Indonesia",
             "bank_account": "1234567890",
