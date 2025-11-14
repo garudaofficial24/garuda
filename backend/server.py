@@ -420,6 +420,71 @@ async def delete_quotation(quotation_id: str):
         raise HTTPException(status_code=404, detail="Quotation not found")
     return {"message": "Quotation deleted successfully"}
 
+# Letter Routes
+@api_router.get("/letters")
+async def get_letters():
+    letters = await db.letters.find().to_list(length=None)
+    return [Letter(**letter) for letter in letters]
+
+@api_router.post("/letters", status_code=201)
+async def create_letter(letter: LetterCreate):
+    letter_dict = letter.dict()
+    letter_dict["id"] = str(uuid.uuid4())
+    letter_dict["created_at"] = datetime.now(timezone.utc).isoformat()
+    letter_dict["signatories"] = [sig.dict() for sig in letter.signatories]
+    await db.letters.insert_one(letter_dict)
+    return Letter(**letter_dict)
+
+@api_router.get("/letters/{letter_id}")
+async def get_letter(letter_id: str):
+    letter = await db.letters.find_one({"id": letter_id})
+    if not letter:
+        raise HTTPException(status_code=404, detail="Letter not found")
+    return Letter(**letter)
+
+@api_router.put("/letters/{letter_id}")
+async def update_letter(letter_id: str, letter: LetterCreate):
+    letter_dict = letter.dict()
+    letter_dict["signatories"] = [sig.dict() for sig in letter.signatories]
+    result = await db.letters.update_one(
+        {"id": letter_id},
+        {"$set": letter_dict}
+    )
+    if result.matched_count == 0:
+        raise HTTPException(status_code=404, detail="Letter not found")
+    
+    updated_letter = await db.letters.find_one({"id": letter_id})
+    return Letter(**updated_letter)
+
+@api_router.delete("/letters/{letter_id}")
+async def delete_letter(letter_id: str):
+    result = await db.letters.delete_one({"id": letter_id})
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Letter not found")
+    return {"message": "Letter deleted successfully"}
+
+# Signature Upload Route
+@api_router.post("/upload-signature")
+async def upload_signature(file: UploadFile = File(...)):
+    try:
+        contents = await file.read()
+        
+        # Validate image
+        try:
+            img = Image.open(io.BytesIO(contents))
+            img.verify()
+        except Exception:
+            raise HTTPException(status_code=400, detail="Invalid image file")
+        
+        # Convert to base64
+        base64_image = base64.b64encode(contents).decode('utf-8')
+        mime_type = file.content_type or 'image/png'
+        data_uri = f"data:{mime_type};base64,{base64_image}"
+        
+        return {"signature": data_uri}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
+
 # PDF Generation Routes
 def format_currency(amount: float, currency: str) -> str:
     if currency == "IDR":
