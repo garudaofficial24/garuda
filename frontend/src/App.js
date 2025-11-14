@@ -27,6 +27,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
     { path: "/", label: "Dashboard", icon: LayoutDashboard },
     { path: "/invoices", label: "Invoices", icon: Receipt },
     { path: "/quotations", label: "Quotations", icon: FileText },
+    { path: "/letters", label: "Letters", icon: Mail },
     { path: "/items", label: "Items", icon: Package },
     { path: "/companies", label: "Companies", icon: Building2 },
   ];
