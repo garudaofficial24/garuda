@@ -740,6 +740,196 @@ async def generate_quotation_pdf(quotation_id: str):
         "Content-Disposition": f"attachment; filename=quotation_{quotation['quotation_number']}.pdf"
     })
 
+# Letter PDF Generation
+@api_router.get("/letters/{letter_id}/pdf")
+async def generate_letter_pdf(letter_id: str):
+    letter = await db.letters.find_one({"id": letter_id})
+    if not letter:
+        raise HTTPException(status_code=404, detail="Letter not found")
+    
+    company = await db.companies.find_one({"id": letter['company_id']})
+    if not company:
+        raise HTTPException(status_code=404, detail="Company not found")
+    
+    buffer = io.BytesIO()
+    doc = SimpleDocTemplate(buffer, pagesize=A4, topMargin=0.5*inch, bottomMargin=0.5*inch)
+    story = []
+    styles = getSampleStyleSheet()
+    
+    # Company Header with Logo (Kop Surat)
+    header_data = []
+    if company.get('logo'):
+        try:
+            logo_data = company['logo'].split(',')[1] if ',' in company['logo'] else company['logo']
+            logo_bytes = base64.b64decode(logo_data)
+            logo_img = Image.open(io.BytesIO(logo_bytes))
+            
+            # Resize logo
+            max_width, max_height = 60, 60
+            logo_img.thumbnail((max_width, max_height), Image.Resampling.LANCZOS)
+            
+            logo_buffer = io.BytesIO()
+            logo_img.save(logo_buffer, format='PNG')
+            logo_buffer.seek(0)
+            
+            logo = RLImage(logo_buffer, width=logo_img.width, height=logo_img.height)
+            
+            company_info = f"""<b>{company['name']}</b><br/>
+            {company.get('motto', '')}<br/>
+            {company.get('address', '')}<br/>
+            Tel: {company.get('phone', '')} | Email: {company.get('email', '')}<br/>
+            Website: {company.get('website', '')}"""
+            
+            header_data = [[logo, Paragraph(company_info, styles['Normal'])]]
+        except:
+            pass
+    
+    if not header_data:
+        company_style = ParagraphStyle('company', parent=styles['Normal'], fontSize=12, alignment=TA_CENTER)
+        story.append(Paragraph(f"<b>{company['name']}</b>", company_style))
+        if company.get('motto'):
+            story.append(Paragraph(company['motto'], company_style))
+        story.append(Paragraph(company.get('address', ''), company_style))
+        story.append(Paragraph(f"Tel: {company.get('phone', '')} | Email: {company.get('email', '')}", company_style))
+        if company.get('website'):
+            story.append(Paragraph(f"Website: {company['website']}", company_style))
+    else:
+        header_table = Table(header_data, colWidths=[80, 450])
+        header_table.setStyle(TableStyle([
+            ('VALIGN', (0, 0), (-1, -1), 'TOP'),
+            ('ALIGN', (0, 0), (0, 0), 'CENTER'),
+        ]))
+        story.append(header_table)
+    
+    # Line separator
+    story.append(Spacer(1, 10))
+    separator_table = Table([['']], colWidths=[500])
+    separator_table.setStyle(TableStyle([
+        ('LINEABOVE', (0, 0), (-1, 0), 2, colors.HexColor('#000000')),
+        ('LINEBELOW', (0, 0), (-1, 0), 1, colors.HexColor('#000000')),
+    ]))
+    story.append(separator_table)
+    story.append(Spacer(1, 20))
+    
+    # Letter Number and Date
+    letter_info_style = ParagraphStyle('letterinfo', parent=styles['Normal'], fontSize=10, alignment=TA_LEFT)
+    story.append(Paragraph(f"Nomor: {letter['letter_number']}", letter_info_style))
+    story.append(Paragraph(f"Tanggal: {letter['date']}", letter_info_style))
+    
+    if letter.get('attachments_count', 0) > 0:
+        story.append(Paragraph(f"Lampiran: {letter['attachments_count']} berkas", letter_info_style))
+    
+    story.append(Paragraph(f"Perihal: <b>{letter['subject']}</b>", letter_info_style))
+    story.append(Spacer(1, 20))
+    
+    # Recipient
+    story.append(Paragraph("Kepada Yth,", styles['Normal']))
+    story.append(Paragraph(f"<b>{letter['recipient_name']}</b>", styles['Normal']))
+    if letter.get('recipient_position'):
+        story.append(Paragraph(letter['recipient_position'], styles['Normal']))
+    if letter.get('recipient_address'):
+        story.append(Paragraph(letter['recipient_address'], styles['Normal']))
+    story.append(Spacer(1, 20))
+    
+    # Greeting based on letter type
+    if letter['letter_type'] == 'general':
+        story.append(Paragraph("Dengan hormat,", styles['Normal']))
+    elif letter['letter_type'] == 'cooperation':
+        story.append(Paragraph("Dengan hormat,", styles['Normal']))
+    elif letter['letter_type'] == 'request':
+        story.append(Paragraph("Dengan hormat,", styles['Normal']))
+    
+    story.append(Spacer(1, 12))
+    
+    # Letter Content
+    content_style = ParagraphStyle('content', parent=styles['Normal'], fontSize=11, alignment=TA_JUSTIFY, leading=16)
+    
+    # Split content by paragraphs
+    paragraphs = letter['content'].split('\n')
+    for para in paragraphs:
+        if para.strip():
+            story.append(Paragraph(para.strip(), content_style))
+            story.append(Spacer(1, 8))
+    
+    story.append(Spacer(1, 12))
+    
+    # Closing based on letter type
+    if letter['letter_type'] == 'general':
+        story.append(Paragraph("Demikian surat ini kami sampaikan. Atas perhatian dan kerjasamanya, kami ucapkan terima kasih.", styles['Normal']))
+    elif letter['letter_type'] == 'cooperation':
+        story.append(Paragraph("Demikian surat penawaran kerjasama ini kami sampaikan. Besar harapan kami dapat menjalin kerjasama yang baik dengan perusahaan Bapak/Ibu.", styles['Normal']))
+    elif letter['letter_type'] == 'request':
+        story.append(Paragraph("Demikian permohonan ini kami sampaikan, atas perhatian dan perkenannya kami ucapkan terima kasih.", styles['Normal']))
+    
+    story.append(Spacer(1, 30))
+    
+    # Signatories
+    if letter.get('signatories') and len(letter['signatories']) > 0:
+        sig_data = []
+        sig_widths = []
+        
+        num_sigs = len(letter['signatories'])
+        col_width = 500 // num_sigs
+        
+        for sig in letter['signatories']:
+            sig_content = []
+            sig_style = ParagraphStyle('sig', parent=styles['Normal'], fontSize=10, alignment=TA_CENTER)
+            
+            sig_content.append(Paragraph(sig.get('position', ''), sig_style))
+            sig_content.append(Spacer(1, 5))
+            
+            # Add signature image if available
+            if sig.get('signature_image'):
+                try:
+                    sig_img_data = sig['signature_image'].split(',')[1] if ',' in sig['signature_image'] else sig['signature_image']
+                    sig_img_bytes = base64.b64decode(sig_img_data)
+                    sig_img_pil = Image.open(io.BytesIO(sig_img_bytes))
+                    
+                    # Resize signature
+                    max_sig_width, max_sig_height = 80, 40
+                    sig_img_pil.thumbnail((max_sig_width, max_sig_height), Image.Resampling.LANCZOS)
+                    
+                    sig_img_buffer = io.BytesIO()
+                    sig_img_pil.save(sig_img_buffer, format='PNG')
+                    sig_img_buffer.seek(0)
+                    
+                    sig_image = RLImage(sig_img_buffer, width=sig_img_pil.width, height=sig_img_pil.height)
+                    sig_content.append(sig_image)
+                except:
+                    sig_content.append(Spacer(1, 40))
+            else:
+                sig_content.append(Spacer(1, 40))
+            
+            sig_content.append(Spacer(1, 5))
+            sig_content.append(Paragraph(f"<b>{sig.get('name', '')}</b>", sig_style))
+            
+            sig_data.append(sig_content)
+            sig_widths.append(col_width)
+        
+        # Create signature table
+        sig_table = Table([sig_data], colWidths=sig_widths)
+        sig_table.setStyle(TableStyle([
+            ('VALIGN', (0, 0), (-1, -1), 'TOP'),
+            ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+        ]))
+        story.append(sig_table)
+    
+    # CC List
+    if letter.get('cc_list'):
+        story.append(Spacer(1, 30))
+        story.append(Paragraph("<b>Tembusan:</b>", styles['Normal']))
+        cc_items = letter['cc_list'].split('\n')
+        for cc in cc_items:
+            if cc.strip():
+                story.append(Paragraph(f"- {cc.strip()}", styles['Normal']))
+    
+    doc.build(story)
+    buffer.seek(0)
+    
+    return StreamingResponse(buffer, media_type="application/pdf", headers={
+        "Content-Disposition": f"attachment; filename=letter_{letter['letter_number'].replace('/', '_')}.pdf"
+    })
+
 # Include the router in the main app
 app.include_router(api_router)
 
