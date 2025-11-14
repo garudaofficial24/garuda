@@ -104,7 +104,7 @@ class InvoiceQuotationAPITester:
         }
         
         success, response = self.run_test(
-            "Create Company", "POST", "companies", 200, 
+            "Create Company", "POST", "companies", 201, 
             company_data, return_response=True
         )
         
