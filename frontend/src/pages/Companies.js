@@ -23,6 +23,7 @@ const Companies = () => {
     phone: "",
     email: "",
     website: "",
+    motto: "",
     npwp: "",
     bank_name: "",
     bank_account: "",
