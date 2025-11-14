@@ -196,6 +196,8 @@ test_plan:
   stuck_tasks: []
   test_all: false
   test_priority: "high_first"
+  completed_tests:
+    - "PDF HTML tags fix verification - PASSED"
 
 agent_communication:
   - agent: "main"
