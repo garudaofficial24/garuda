@@ -120,6 +120,9 @@ function AppContent() {
             <Route path="/quotations" element={<Quotations />} />
             <Route path="/quotations/create" element={<CreateQuotation />} />
             <Route path="/quotations/edit/:id" element={<EditQuotation />} />
+            <Route path="/letters" element={<Letters />} />
+            <Route path="/letters/create" element={<CreateLetter />} />
+            <Route path="/letters/edit/:id" element={<EditLetter />} />
             <Route path="/items" element={<Items />} />
             <Route path="/companies" element={<Companies />} />
           </Routes>
