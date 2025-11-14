@@ -162,7 +162,7 @@ const Letters = () => {
                     <Button
                       variant="ghost"
                       size="sm"
-                      onClick={() => handlePreview(letter.id)}
+                      onClick={() => handlePreview(letter)}
                       data-testid={`preview-letter-${letter.id}`}
                       className="text-blue-600 hover:text-blue-700"
                     >
