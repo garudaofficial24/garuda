@@ -140,6 +140,14 @@ const Dashboard = () => {
                 <span className="font-medium">Create New Quotation</span>
               </a>
               <a
+                href="/letters/create"
+                data-testid="quick-action-create-letter"
+                className="flex items-center gap-3 p-4 rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-700 transition-colors"
+              >
+                <Mail size={20} />
+                <span className="font-medium">Create New Letter</span>
+              </a>
+              <a
                 href="/items"
                 data-testid="quick-action-manage-items"
                 className="flex items-center gap-3 p-4 rounded-lg bg-purple-50 hover:bg-purple-100 text-purple-700 transition-colors"
