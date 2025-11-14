@@ -210,6 +210,7 @@ test_plan:
   test_priority: "high_first"
   completed_tests:
     - "PDF HTML tags fix verification - PASSED"
+    - "Letters feature backend functionality - PASSED"
 
 agent_communication:
   - agent: "main"
