@@ -101,3 +101,87 @@
 #====================================================================================================
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
+
+user_problem_statement: "Replace all Shadcn/Radix dropdown components with native HTML select elements to resolve persistent dropdown errors"
+
+backend:
+  - task: "No backend changes required"
+    implemented: true
+    working: true
+    file: "N/A"
+    stuck_count: 0
+    priority: "low"
+    needs_retesting: false
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Backend unchanged for dropdown replacement task"
+
+frontend:
+  - task: "Replace Shadcn Select with native HTML select in CreateInvoice.js"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/pages/CreateInvoice.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Replaced all Shadcn Select components (company, currency, status, item selection) with native HTML select elements. Applied Tailwind styling matching Input component style. Screenshot verification shows dropdowns rendering correctly without errors."
+  
+  - task: "Replace Shadcn Select with native HTML select in EditInvoice.js"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/pages/EditInvoice.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Replaced all Shadcn Select components with native HTML select elements. Same pattern as CreateInvoice.js applied."
+  
+  - task: "Replace Shadcn Select with native HTML select in CreateQuotation.js"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/pages/CreateQuotation.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Replaced all Shadcn Select components with native HTML select elements. Same pattern applied consistently."
+  
+  - task: "Replace Shadcn Select with native HTML select in EditQuotation.js"
+    implemented: true
+    working: true
+    file: "/app/frontend/src/pages/EditQuotation.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: true
+        agent: "main"
+        comment: "Replaced all Shadcn Select components with native HTML select elements. All four form files now use stable native dropdowns."
+
+metadata:
+  created_by: "main_agent"
+  version: "1.0"
+  test_sequence: 0
+  run_ui: true
+
+test_plan:
+  current_focus:
+    - "Test all dropdown interactions in CreateInvoice.js"
+    - "Test all dropdown interactions in EditInvoice.js"
+    - "Test all dropdown interactions in CreateQuotation.js"
+    - "Test all dropdown interactions in EditQuotation.js"
+  stuck_tasks: []
+  test_all: false
+  test_priority: "high_first"
+
+agent_communication:
+  - agent: "main"
+    message: "Successfully replaced all Shadcn/Radix Select components with native HTML select elements across all 4 form files (CreateInvoice, EditInvoice, CreateQuotation, EditQuotation). Changes include: 1) Removed Shadcn Select imports, 2) Replaced Select/SelectTrigger/SelectValue/SelectContent/SelectItem with native select/option elements, 3) Applied matching Tailwind CSS styling, 4) Updated handleSelectChange to work with native onChange events, 5) Kept all data-testid attributes for testing. Screenshot verification shows dropdowns working without errors. Ready for comprehensive frontend testing."
